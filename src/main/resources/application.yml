@@ -5,7 +5,7 @@ spring:
         url: jdbc:mysql://192.168.29.131/zheye?useSSL=false&useUnicode=true
         username: root
         password: lwc950518
-        driver-class-name: com.mysql.jdbc.Driver
+        driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis:
     configuration:
         cache-enabled: true
@@ -13,4 +13,6 @@ mybatis:
         map-underscore-to-camel-case: true
         use-generated-keys: true
 logging:
-    level: debug
+    level:
+        com.liewmanchoi.zheye.dao: debug
+    
