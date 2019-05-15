@@ -2,12 +2,13 @@ package com.liewmanchoi.zheye.dao;
 
 import com.liewmanchoi.zheye.model.User;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author wangsheng
  * @date 2019/5/14
  */
-@Mapper
+@Repository
 public interface UserDAO {
     String TABLE_NAME = " user ";
     String INSERT_FIELDS = " name, password, salt, avatar_url ";
@@ -19,8 +20,8 @@ public interface UserDAO {
      * @return int
      * @date 2019/5/14
      */
-    @Insert({"INSERT INTO", TABLE_NAME, "(", INSERT_FIELDS, ") VALUES(#{user.name}, #{user.password}, #{user.salt}, " +
-            "#{user.avatarUrl})"})
+    @Insert({"INSERT INTO", TABLE_NAME, "(", INSERT_FIELDS, ") VALUES(#{name}, #{password}, #{salt}, " +
+            "#{avatarUrl})"})
     int addUser(User user);
 
     /**
@@ -39,7 +40,7 @@ public interface UserDAO {
      * @param user JavaBean
      * @date 2019/5/14
      */
-    @Update({"UPDATE", TABLE_NAME, "SET password = #{user.password} WHERE id = #{user.id}"})
+    @Update({"UPDATE", TABLE_NAME, "SET password = #{password} WHERE id = #{id}"})
     void updatePassword(User user);
 
     /**
