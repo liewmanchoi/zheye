@@ -6,13 +6,15 @@ spring:
         username: root
         password: lwc950518
         driver-class-name: com.mysql.cj.jdbc.Driver
+    freemarker:
+        suffix: .html
 mybatis:
     configuration:
         cache-enabled: true
         default-statement-timeout: 3000
         map-underscore-to-camel-case: true
         use-generated-keys: true
+    mapper-locations: classpath:mybatis/mapper/*.xml
 logging:
     level:
-        com.liewmanchoi.zheye.dao: debug
-    
+        com.liewmanchoi.zheye: debug
