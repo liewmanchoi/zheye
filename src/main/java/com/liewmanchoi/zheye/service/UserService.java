@@ -38,7 +38,7 @@ public class UserService {
      * @date 2019/5/16
      */
     public Map<String, Object> register(String username, String password) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(1);
         if (StringUtils.isBlank(username)) {
             map.put("msg", "用户名不能为空");
             return map;
@@ -66,6 +66,44 @@ public class UserService {
         userDAO.addUser(user);
 
         // 账户注册成功后，自动设置token
+        String ticket = addLoginTicket(user.getId());
+        map.put("ticket", ticket);
+        return map;
+    }
+
+    /**
+     * login
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return java.util.Map<java.lang.String, java.lang.Object>
+     * @date 2019/5/16
+     */
+    public Map<String, Object> login(String username, String password) {
+        Map<String, Object> map = new HashMap<>(1);
+
+        if (StringUtils.isBlank(password)) {
+            map.put("msg", "密码不能为空");
+            return map;
+        }
+
+        if (StringUtils.isBlank(username)) {
+            map.put("msg", "用户名不能为空");
+            return map;
+        }
+
+        User user = userDAO.selectByName(username);
+        if (user == null) {
+            map.put("msg", "用户名不存在");
+            return map;
+        }
+
+        String saltedPassword = password + user.getSalt();
+        if (!DigestUtils.md5DigestAsHex(saltedPassword.getBytes()).equals(user.getPassword())) {
+            map.put("msg", "密码不正确");
+            return map;
+        }
+
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);
         return map;
