@@ -35,6 +35,16 @@ public interface UserDAO {
     User selectById(int id);
 
     /**
+     * selectByName
+     *
+     * @param name 用于查找的用户名
+     * @return com.liewmanchoi.zheye.model.User
+     * @date 2019/5/16
+     */
+    @Select({"SELECT", SELECT_FIELDS, "FROM", TABLE_NAME, "WHERE name = #{name}"})
+    User selectByName(String name);
+
+    /**
      * updatePassword
      *
      * @param user JavaBean
