@@ -38,5 +38,5 @@ public interface QuestionDAO {
      * @date 2019/5/15
      */
     List<Question> selectLatestQuestions(@Param("userId") int userId, @Param("offset") int offset,
-                                          @Param("limit") int limit);
+                                         @Param("limit") int limit);
 }
