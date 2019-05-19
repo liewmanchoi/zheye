@@ -117,7 +117,12 @@ public class UserService {
         loginTicket.setExpired(date);
         loginTicket.setStatus(0);
         loginTicket.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));
+        loginTicketDAO.addTicket(loginTicket);
 
         return loginTicket.getTicket();
+    }
+
+    public void logout(String ticket) {
+        loginTicketDAO.updateStatus(ticket, 1);
     }
 }
