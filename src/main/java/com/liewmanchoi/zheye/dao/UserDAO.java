@@ -22,6 +22,7 @@ public interface UserDAO {
      */
     @Insert({"INSERT INTO", TABLE_NAME, "(", INSERT_FIELDS, ") VALUES(#{name}, #{password}, #{salt}, " +
             "#{avatarUrl})"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int addUser(User user);
 
     /**
@@ -33,6 +34,16 @@ public interface UserDAO {
      */
     @Select({"SELECT", SELECT_FIELDS, "FROM", TABLE_NAME, "WHERE id = #{id}"})
     User selectById(int id);
+
+    /**
+     * selectByName
+     *
+     * @param name 用于查找的用户名
+     * @return com.liewmanchoi.zheye.model.User
+     * @date 2019/5/16
+     */
+    @Select({"SELECT", SELECT_FIELDS, "FROM", TABLE_NAME, "WHERE name = #{name}"})
+    User selectByName(String name);
 
     /**
      * updatePassword
