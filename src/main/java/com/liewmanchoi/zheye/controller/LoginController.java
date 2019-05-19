@@ -91,7 +91,7 @@ public class LoginController {
     }
 
     @RequestMapping(path = "/reglogin", method = RequestMethod.GET)
-    public String reLogin(Model model, @RequestParam(value = "next", required = false) String next) {
+    public String reglogin(Model model, @RequestParam(value = "next", required = false) String next) {
         model.addAttribute("next", next);
         return "login";
     }

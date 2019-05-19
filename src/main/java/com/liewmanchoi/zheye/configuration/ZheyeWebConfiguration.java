@@ -1,6 +1,6 @@
 package com.liewmanchoi.zheye.configuration;
 
-import com.liewmanchoi.zheye.interceptor.LoginRequiredInterceptor;
+import com.liewmanchoi.zheye.interceptor.LoginInterceptorWithCallback;
 import com.liewmanchoi.zheye.interceptor.PassportInterceptor;
 import com.liewmanchoi.zheye.interceptor.RegLoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +18,21 @@ public class ZheyeWebConfiguration implements WebMvcConfigurer {
     PassportInterceptor passportInterceptor;
 
     @Autowired
-    LoginRequiredInterceptor loginRequiredInterceptor;
+    LoginInterceptorWithCallback loginInterceptorWithCallback;
 
     @Autowired
     RegLoginInterceptor regLoginInterceptor;
 
+    /**
+     * 配置拦截器
+     *
+     * @param registry InterceptorRegistry
+     * @date 2019/5/19
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(passportInterceptor);
-        registry.addInterceptor(loginRequiredInterceptor).addPathPatterns("/user/**");
+        registry.addInterceptor(loginInterceptorWithCallback).addPathPatterns("/user/**");
         registry.addInterceptor(regLoginInterceptor).addPathPatterns("/reglogin");
     }
 }
