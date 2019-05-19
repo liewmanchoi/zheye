@@ -22,6 +22,7 @@ public interface UserDAO {
      */
     @Insert({"INSERT INTO", TABLE_NAME, "(", INSERT_FIELDS, ") VALUES(#{name}, #{password}, #{salt}, " +
             "#{avatarUrl})"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int addUser(User user);
 
     /**
