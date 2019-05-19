@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2019/5/19
  */
 @Component
-public class LoginRequiredInterceptor implements HandlerInterceptor {
+public class LoginInterceptorWithCallback implements HandlerInterceptor {
     @Autowired
     HostHolder hostHolder;
 
