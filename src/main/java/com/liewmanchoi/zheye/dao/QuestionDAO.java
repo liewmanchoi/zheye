@@ -3,6 +3,8 @@ package com.liewmanchoi.zheye.dao;
 import com.liewmanchoi.zheye.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -39,4 +41,25 @@ public interface QuestionDAO {
      */
     List<Question> selectLatestQuestions(@Param("userId") int userId, @Param("offset") int offset,
                                          @Param("limit") int limit);
+
+    /**
+     * getById
+     *
+     * @param id 问题id
+     * @return com.liewmanchoi.zheye.model.Question
+     * @date 2019/5/19
+     */
+    @Select({"SELECT", SELECTED_FIELDS, "FROM", TABLE_NAME, "WHERE id = #{id}"})
+    Question getById(int id);
+
+    /**
+     * updateCommentCount
+     *
+     * @param id 问题id
+     * @param commentCount 评论数
+     * @return int
+     * @date 2019/5/19
+     */
+    @Update({"UPDATE", TABLE_NAME, "SET comment_count = #{commentCount} WHERE id = #{id}"})
+    int updateCommentCount(@Param("id") int id, @Param("commentCount") int commentCount);
 }
