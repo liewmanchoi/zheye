@@ -13,14 +13,14 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2019/5/19
  */
 @Component
-public class LoginInterceptorWithCallback implements HandlerInterceptor {
+public class LoginInterceptorForReferer implements HandlerInterceptor {
     @Autowired
     HostHolder hostHolder;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (hostHolder.getUser() == null) {
-            response.sendRedirect("/reglogin?next=" + request.getRequestURI());
+            response.sendRedirect("/reglogin?next=" + request.getHeader("Referer"));
             return false;
         }
         return true;

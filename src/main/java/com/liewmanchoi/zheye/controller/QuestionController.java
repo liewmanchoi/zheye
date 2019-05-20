@@ -1,18 +1,19 @@
 package com.liewmanchoi.zheye.controller;
 
-import com.liewmanchoi.zheye.model.HostHolder;
-import com.liewmanchoi.zheye.model.Question;
+import com.liewmanchoi.zheye.model.*;
 import com.liewmanchoi.zheye.service.QuestionService;
+import com.liewmanchoi.zheye.service.ReplyService;
+import com.liewmanchoi.zheye.service.UserService;
 import com.liewmanchoi.zheye.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author wangsheng
@@ -26,6 +27,30 @@ public class QuestionController {
 
     @Autowired
     QuestionService questionService;
+
+    @Autowired
+    ReplyService replyService;
+
+    @Autowired
+    UserService userService;
+
+    @RequestMapping(value = "question/{qid}", method = RequestMethod.GET)
+    public String questionDetail(Model model, @PathVariable("qid") int qid) {
+        Question question = questionService.getById(qid);
+        model.addAttribute("question", question);
+        List<Reply> replyList = replyService.getRepliesByEntity(qid, EntityType.QUESTION);
+        List<ViewObject> viewObjects = new ArrayList<>();
+
+        for (Reply comment : replyList) {
+            ViewObject viewObject = new ViewObject();
+            viewObject.set("comment", comment);
+            viewObject.set("user", userService.getUser(comment.getUserId()));
+            viewObjects.add(viewObject);
+        }
+        model.addAttribute("comments", viewObjects);
+
+        return "detail";
+    }
 
     @RequestMapping(value = "/question/add", method = RequestMethod.POST)
     @ResponseBody
