@@ -66,8 +66,10 @@ public interface MessageDAO {
      * @return java.util.List<com.liewmanchoi.zheye.model.Message>
      * @date 2019/5/20
      */
-    @Select({"SELECT", INSERT_FIELDS, ", COUNT(id) AS id FROM (SELECT", SELECTED_FIELDS, "FROM", TABLE_NAME,
-            "WHERE from_id = #{userId} OR to_id = #{userId} ORDER BY id DESC) GROUP BY conversation_id ORDER BY " +
-                    "created_date DESC limit #{offset}, #{limit}"})
+    @Select({"SELECT b.cnt as id, a.from_id, a.to_id, a.content, a.created_date, a.has_read, a.conversation_id FROM message AS a,",
+    "(SELECT conversation_id, COUNT(conversation_id) as cnt, MAX(created_date) AS created_date FROM message " +
+            "WHERE from_id = #{userId} OR to_id = #{userId} GROUP BY conversation_id) AS b",
+    "WHERE a.created_date = b.created_date AND a.conversation_id = b.conversation_id ORDER BY created_date " +
+            "DESC limit #{offset}, #{limit}"})
     List<Message> getConversationList(@Param("userId") int userId, @Param("offset") int offset, @Param("limit") int limit);
 }
