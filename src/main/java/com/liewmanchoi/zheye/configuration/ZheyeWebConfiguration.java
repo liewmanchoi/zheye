@@ -1,6 +1,5 @@
 package com.liewmanchoi.zheye.configuration;
 
-
 import com.liewmanchoi.zheye.interceptor.LoginInterceptorForNext;
 import com.liewmanchoi.zheye.interceptor.LoginInterceptorForReferer;
 import com.liewmanchoi.zheye.interceptor.PassportInterceptor;
@@ -16,23 +15,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class ZheyeWebConfiguration implements WebMvcConfigurer {
-    @Autowired
-    PassportInterceptor passportInterceptor;
+  @Autowired PassportInterceptor passportInterceptor;
 
-    @Autowired
-    LoginInterceptorForReferer loginInterceptorForReferer;
+  @Autowired LoginInterceptorForReferer loginInterceptorForReferer;
 
-    @Autowired
-    LoginInterceptorForNext loginInterceptorForNext;
+  @Autowired LoginInterceptorForNext loginInterceptorForNext;
 
-    @Autowired
-    RegLoginInterceptor regLoginInterceptor;
+  @Autowired RegLoginInterceptor regLoginInterceptor;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(passportInterceptor);
-        registry.addInterceptor(loginInterceptorForReferer).addPathPatterns("/addComment");
-        registry.addInterceptor(loginInterceptorForNext).addPathPatterns("/user/**");
-        registry.addInterceptor(regLoginInterceptor).addPathPatterns("/reglogin");
-    }
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry.addInterceptor(passportInterceptor);
+    registry.addInterceptor(loginInterceptorForReferer).addPathPatterns("/addComment");
+    registry.addInterceptor(loginInterceptorForNext).addPathPatterns("/user/**");
+    registry.addInterceptor(regLoginInterceptor).addPathPatterns("/reglogin");
+  }
 }

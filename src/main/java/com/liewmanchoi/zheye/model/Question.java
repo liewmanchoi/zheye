@@ -1,9 +1,8 @@
 package com.liewmanchoi.zheye.model;
 
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Date;
 
 /**
  * @author wangsheng
@@ -12,10 +11,10 @@ import java.util.Date;
 @Getter
 @Setter
 public class Question {
-    private int id;
-    private String title;
-    private String content;
-    private Date createdDate;
-    private int userId;
-    private int commentCount;
+  private int id;
+  private String title;
+  private String content;
+  private Date createdDate;
+  private int userId;
+  private int commentCount;
 }
