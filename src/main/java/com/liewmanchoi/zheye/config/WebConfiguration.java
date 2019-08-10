@@ -1,4 +1,4 @@
-package com.liewmanchoi.zheye.configuration;
+package com.liewmanchoi.zheye.config;
 
 import com.liewmanchoi.zheye.interceptor.LoginInterceptorForNext;
 import com.liewmanchoi.zheye.interceptor.LoginInterceptorForReferer;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2019/5/19
  */
 @Configuration
-public class ZheyeWebConfiguration implements WebMvcConfigurer {
+public class WebConfiguration implements WebMvcConfigurer {
   @Autowired PassportInterceptor passportInterceptor;
 
   @Autowired LoginInterceptorForReferer loginInterceptorForReferer;

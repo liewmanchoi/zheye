@@ -20,10 +20,10 @@
       <artifactId>spring-boot-starter-data-redis</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
-    <dependency>
-      <artifactId>spring-boot-starter-data-solr</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
+    <!--    <dependency>-->
+    <!--      <artifactId>spring-boot-starter-data-solr</artifactId>-->
+    <!--      <groupId>org.springframework.boot</groupId>-->
+    <!--    </dependency>-->
     <dependency>
       <artifactId>spring-boot-starter-freemarker</artifactId>
       <groupId>org.springframework.boot</groupId>
@@ -41,7 +41,6 @@
       <artifactId>spring-boot-starter-jdbc</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
-
     <dependency>
       <artifactId>spring-boot-devtools</artifactId>
       <groupId>org.springframework.boot</groupId>
@@ -66,15 +65,20 @@
       <groupId>org.springframework.boot</groupId>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.9</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
     <dependency>
       <artifactId>fastjson</artifactId>
       <groupId>com.alibaba</groupId>
       <version>1.2.58</version>
     </dependency>
-
   </dependencies>
-  <description>基于Spring Boot的问答网站</description>
+  <description>基于Spring Boot的仿知乎问答网站</description>
   <groupId>com.liewmanchoi</groupId>
   <modelVersion>4.0.0</modelVersion>
   <name>zheye</name>
@@ -88,6 +92,10 @@
 
   <properties>
     <java.version>1.8</java.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
   <version>0.0.1-SNAPSHOT</version>

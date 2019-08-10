@@ -8,7 +8,7 @@ import java.util.Map;
  * @date 2019/5/15
  */
 public class ViewObject {
-  private Map<String, Object> map = new HashMap<>();
+  private Map<String, Object> map = new HashMap<>(16);
 
   public void set(String key, Object value) {
     map.put(key, value);

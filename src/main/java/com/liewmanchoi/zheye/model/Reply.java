@@ -14,7 +14,6 @@ public class Reply {
   private int id;
   /** userId 回复发表者id */
   private int userId;
-
   /** entityId 被回复的对象id */
   private int entityId;
   /** entityId 被回复对象的类型 */
