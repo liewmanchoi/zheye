@@ -4,16 +4,17 @@
 <mapper namespace="com.liewmanchoi.zheye.dao.QuestionDAO">
   <select id="selectLatestQuestions" resultType="com.liewmanchoi.zheye.model.Question">
     SELECT
-    <if test="userId != 0">
-      WHERE user_id = #{userId}
-    </if>
+    <include refid="selectedFields"/>
     FROM
     <include refid="table"/>
 
-    <include refid="selectedFields"/>
-    ORDER BY created_date DESC
+    <if test="userId != 0">
+      WHERE user_id = #{userId}
+    </if>
+    ORDER BY id DESC
     LIMIT #{offset}, #{limit}
   </select>
-  <sql id="selectedFields">id, title, content, comment_count, created_date, user_id</sql>
   <sql id="table">question</sql>
+
+  <sql id="selectedFields">id, title, content, comment_count, created_date, user_id</sql>
 </mapper>

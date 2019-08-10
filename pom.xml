@@ -77,6 +77,11 @@
       <groupId>com.alibaba</groupId>
       <version>1.2.58</version>
     </dependency>
+    <dependency>
+      <artifactId>jedis</artifactId>
+      <groupId>redis.clients</groupId>
+      <version>2.9.1</version>
+    </dependency>
   </dependencies>
   <description>基于Spring Boot的仿知乎问答网站</description>
   <groupId>com.liewmanchoi</groupId>
