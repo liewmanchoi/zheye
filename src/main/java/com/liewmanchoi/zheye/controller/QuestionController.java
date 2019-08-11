@@ -5,10 +5,12 @@ import com.liewmanchoi.zheye.model.HostHolder;
 import com.liewmanchoi.zheye.model.Question;
 import com.liewmanchoi.zheye.model.Reply;
 import com.liewmanchoi.zheye.model.ViewObject;
+import com.liewmanchoi.zheye.service.LikeService;
 import com.liewmanchoi.zheye.service.QuestionService;
 import com.liewmanchoi.zheye.service.ReplyService;
 import com.liewmanchoi.zheye.service.UserService;
-import com.liewmanchoi.zheye.utils.JSONUtils;
+import com.liewmanchoi.zheye.utils.JsonUtil;
+import com.liewmanchoi.zheye.utils.JsonUtil.STATUS;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +39,8 @@ public class QuestionController {
 
   @Autowired UserService userService;
 
+  @Autowired private LikeService likeService;
+
   @RequestMapping(value = "question/{qid}", method = RequestMethod.GET)
   public String questionDetail(Model model, @PathVariable("qid") int qid) {
     Question question = questionService.getById(qid);
@@ -46,7 +50,18 @@ public class QuestionController {
 
     for (Reply comment : replyList) {
       ViewObject viewObject = new ViewObject();
+
+      if (hostHolder.getUser() == null) {
+        viewObject.set("liked", 0);
+      } else {
+        viewObject.set(
+            "liked",
+            likeService.getLikeStatus(
+                hostHolder.getUser().getId(), EntityType.COMMENT, comment.getId()));
+      }
+
       viewObject.set("comment", comment);
+      viewObject.set("likeCount", likeService.getLikeCount(EntityType.COMMENT, comment.getId()));
       viewObject.set("user", userService.getUser(comment.getUserId()));
       viewObjects.add(viewObject);
     }
@@ -67,13 +82,13 @@ public class QuestionController {
       question.setUserId(hostHolder.getUser().getId());
 
       if (questionService.addQuestion(question) > 0) {
-        return JSONUtils.getJSONString(0);
+        return JsonUtil.getJSONString(0);
       }
 
     } catch (Exception exception) {
       log.error("增加题目失败 " + exception.getMessage());
     }
 
-    return JSONUtils.getJSONString(1, "失败");
+    return JsonUtil.getJSONString(STATUS.FAILURE, "失败");
   }
 }

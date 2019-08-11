@@ -29,4 +29,8 @@ public class ReplyService {
   public void deleteReply(int entityId, int entityType) {
     replyDAO.updateStatus(entityId, entityType, 1);
   }
+
+  public Reply getReplyById(int id) {
+    return replyDAO.getReplyById(id);
+  }
 }

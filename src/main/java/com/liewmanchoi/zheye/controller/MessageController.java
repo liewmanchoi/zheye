@@ -6,7 +6,7 @@ import com.liewmanchoi.zheye.model.User;
 import com.liewmanchoi.zheye.model.ViewObject;
 import com.liewmanchoi.zheye.service.MessageService;
 import com.liewmanchoi.zheye.service.UserService;
-import com.liewmanchoi.zheye.utils.JSONUtils;
+import com.liewmanchoi.zheye.utils.JsonUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -92,12 +92,12 @@ public class MessageController {
       @RequestParam("toName") String toName, @RequestParam("content") String content) {
     try {
       if (hostHolder.getUser() == null) {
-        return JSONUtils.getJSONString(999, "未登录");
+        return JsonUtil.getJSONString(999, "未登录");
       }
 
       User user = userService.selectByName(toName);
       if (user == null) {
-        return JSONUtils.getJSONString(1, "用户不存在");
+        return JsonUtil.getJSONString(1, "用户不存在");
       }
 
       Message message = new Message();
@@ -107,10 +107,10 @@ public class MessageController {
       message.setCreatedDate(new Date());
       messageService.addMessage(message);
 
-      return JSONUtils.getJSONString(0);
+      return JsonUtil.getJSONString(0);
     } catch (Exception e) {
       log.error("增加站内信失败 " + e.getMessage());
-      return JSONUtils.getJSONString(1, "插入站内信失败");
+      return JsonUtil.getJSONString(1, "插入站内信失败");
     }
   }
 
@@ -128,10 +128,10 @@ public class MessageController {
       message.setCreatedDate(new Date());
       messageService.addMessage(message);
 
-      return JSONUtils.getJSONString(message.getId());
+      return JsonUtil.getJSONString(message.getId());
     } catch (Exception e) {
       log.error("增加评论失败 " + e.getMessage());
-      return JSONUtils.getJSONString(1, "插入评论失败");
+      return JsonUtil.getJSONString(1, "插入评论失败");
     }
   }
 }

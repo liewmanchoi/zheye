@@ -86,4 +86,7 @@ public interface ReplyDAO {
     "WHERE entity_id = #{entityId} and entity_type = #{entityType}"
   })
   int getRepliesCount(@Param("entityId") int entityId, @Param("entityType") int entityType);
+
+  @Select({"SELECT", SELECTED_FIELDS, "FROM", TABLE_NAME, "WHERE id = #{id}"})
+  Reply getReplyById(int id);
 }

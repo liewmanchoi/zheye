@@ -24,11 +24,13 @@ public class RedisDAO {
     String key = RedisKeyUtil.getLikeKey(entityType, entityId);
     Long size = likeServiceOperations.size(key);
 
+    log.info("getLikeCount, result: [{}]", size);
     return Optional.ofNullable(size).orElse(0L);
   }
 
   /** 获取点赞状态(1：点赞；-1：点踩；0：未评价） */
   public int getLikeStatus(int userId, int entityType, int entityId) {
+    log.info("getLikeStatus:  [{}], [{}], [{}]", userId, entityType, entityId);
     String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
     String dislikeKey = RedisKeyUtil.getDislikeKey(entityType, entityId);
 
@@ -45,6 +47,7 @@ public class RedisDAO {
 
   /** 点赞 */
   public void like(int userId, int entityType, int entityId) {
+    log.info("like: [{}], [{}], [{}]", userId, entityType, entityId);
     String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
     likeServiceOperations.add(likeKey, userId);
 
@@ -54,6 +57,7 @@ public class RedisDAO {
 
   /** 点踩 */
   public void dislike(int userId, int entityType, int entityId) {
+    log.info("dislike: [{}], [{}], [{}]", userId, entityType, entityId);
     String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
     likeServiceOperations.remove(likeKey, userId);
 
