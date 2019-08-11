@@ -7,7 +7,7 @@ import java.util.Map;
  * @author wangsheng
  * @date 2019/5/19
  */
-public class JSONUtils {
+public class JsonUtil {
   public static String getJSONString(int code) {
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("code", code);
@@ -27,5 +27,10 @@ public class JSONUtils {
     map.forEach(jsonObject::put);
 
     return jsonObject.toJSONString();
+  }
+
+  public static class STATUS {
+    public static final int SUCCESS = 0;
+    public static final int FAILURE = 1;
   }
 }

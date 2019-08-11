@@ -6,7 +6,7 @@ package com.liewmanchoi.zheye.utils;
  */
 public class RedisKeyUtil {
   private static final String SPLIT = ":";
-  private static final String APP = "ZhEYE";
+  private static final String APP = "ZHEYE";
   private static final String BIZ_LIKE = "LIKE";
   private static final String BIZ_DISLIKE = "DISLIKE";
 
