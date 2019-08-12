@@ -139,7 +139,8 @@ public class RedisDAO {
     log.info("获取类型为[{}]的实体[{}]的粉丝", entityType, entityId);
     String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
     Set<Integer> result =
-        followerServiceOperations.rangeByScore(followerKey, offset, offset + count);
+        followerServiceOperations.reverseRange(followerKey, offset, offset + count);
+    log.info("getFollowers: [{}]", result);
     return result != null ? new ArrayList<>(result) : null;
   }
 
@@ -154,7 +155,7 @@ public class RedisDAO {
     log.info("获取用户[{}]关注的类型为[{}]的实体", userId, entityType);
     String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
     Set<Integer> result =
-        followerServiceOperations.rangeByScore(followeeKey, offset, offset + count);
+        followerServiceOperations.reverseRange(followeeKey, offset, offset + count);
     return result != null ? new ArrayList<>(result) : null;
   }
 
