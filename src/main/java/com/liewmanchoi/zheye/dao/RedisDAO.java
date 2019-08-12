@@ -107,10 +107,7 @@ public class RedisDAO {
               }
             });
 
-    return result != null
-        && result.size() == 2
-        && result.get(0).equals(Boolean.TRUE)
-        && result.get(1).equals(Boolean.TRUE);
+    return result != null;
   }
 
   /** 取消关注某个实体 */
@@ -135,10 +132,7 @@ public class RedisDAO {
               }
             });
 
-    return result != null
-        && result.size() == 2
-        && (Long) result.get(0) > 0
-        && (Long) result.get(1) > 0;
+    return result != null;
   }
 
   public List<Integer> getFollowers(int entityType, int entityId, int offset, int count) {
