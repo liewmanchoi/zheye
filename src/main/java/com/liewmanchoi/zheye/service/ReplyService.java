@@ -33,4 +33,8 @@ public class ReplyService {
   public Reply getReplyById(int id) {
     return replyDAO.getReplyById(id);
   }
+
+  public int getUserReplyCount(int userId) {
+    return replyDAO.getUserReplyCount(userId);
+  }
 }

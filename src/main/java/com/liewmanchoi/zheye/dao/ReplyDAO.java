@@ -19,13 +19,7 @@ public interface ReplyDAO {
   String INSERT_FIELDS = " user_id, entity_id, entity_type, content, created_date, status ";
   String SELECTED_FIELDS = " id, " + INSERT_FIELDS;
 
-  /**
-   * * addReply
-   *
-   * @param reply Reply
-   * @return int
-   * @date 2019/5/20
-   */
+  /** addReply */
   @Insert({
     "INSERT INTO",
     TABLE_NAME,
@@ -37,14 +31,7 @@ public interface ReplyDAO {
   @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
   int addReply(Reply reply);
 
-  /**
-   * updateStatus
-   *
-   * @param entityId int
-   * @param entityType int
-   * @param status int
-   * @date 2019/5/20
-   */
+  /** updateStatus */
   @Update({
     "UPDATE",
     TABLE_NAME,
@@ -55,14 +42,7 @@ public interface ReplyDAO {
       @Param("entityType") int entityType,
       @Param("status") int status);
 
-  /**
-   * selectByEntity
-   *
-   * @param entityId int
-   * @param entityType int
-   * @return java.util.List<com.liewmanchoi.zheye.model.Reply>
-   * @date 2019/5/20
-   */
+  /** selectByEntity */
   @Select({
     "SELECT",
     SELECTED_FIELDS,
@@ -72,14 +52,7 @@ public interface ReplyDAO {
   })
   List<Reply> selectByEntity(@Param("entityId") int entityId, @Param("entityType") int entityType);
 
-  /**
-   * getRepliesCount
-   *
-   * @param entityId int
-   * @param entityType int
-   * @return int
-   * @date 2019/5/20
-   */
+  /** getRepliesCount */
   @Select({
     "SELECT COUNT(id) FROM",
     TABLE_NAME,
@@ -89,4 +62,7 @@ public interface ReplyDAO {
 
   @Select({"SELECT", SELECTED_FIELDS, "FROM", TABLE_NAME, "WHERE id = #{id}"})
   Reply getReplyById(int id);
+
+  @Select({"SELECT COUNT(id) FROM", TABLE_NAME, "WHERE user_id = #{userId}"})
+  int getUserReplyCount(int userId);
 }
