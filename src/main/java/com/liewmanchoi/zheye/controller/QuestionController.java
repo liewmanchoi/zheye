@@ -4,7 +4,9 @@ import com.liewmanchoi.zheye.model.EntityType;
 import com.liewmanchoi.zheye.model.HostHolder;
 import com.liewmanchoi.zheye.model.Question;
 import com.liewmanchoi.zheye.model.Reply;
+import com.liewmanchoi.zheye.model.User;
 import com.liewmanchoi.zheye.model.ViewObject;
+import com.liewmanchoi.zheye.service.FollowService;
 import com.liewmanchoi.zheye.service.LikeService;
 import com.liewmanchoi.zheye.service.QuestionService;
 import com.liewmanchoi.zheye.service.ReplyService;
@@ -31,15 +33,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @Slf4j
 public class QuestionController {
-  @Autowired HostHolder hostHolder;
-
-  @Autowired QuestionService questionService;
-
-  @Autowired ReplyService replyService;
-
-  @Autowired UserService userService;
-
+  @Autowired private HostHolder hostHolder;
+  @Autowired private QuestionService questionService;
+  @Autowired private ReplyService replyService;
+  @Autowired private UserService userService;
   @Autowired private LikeService likeService;
+  @Autowired private FollowService followService;
 
   @RequestMapping(value = "question/{qid}", method = RequestMethod.GET)
   public String questionDetail(Model model, @PathVariable("qid") int qid) {
@@ -66,6 +65,29 @@ public class QuestionController {
       viewObjects.add(viewObject);
     }
     model.addAttribute("comments", viewObjects);
+
+    List<ViewObject> followUsers = new ArrayList<>();
+    // 获取关注的用户信息
+    List<Integer> users = followService.getFollowers(EntityType.QUESTION, qid, 20);
+    for (Integer userId : users) {
+      ViewObject vo = new ViewObject();
+      User user = userService.getUser(userId);
+      if (user == null) {
+        continue;
+      }
+      vo.set("name", user.getName());
+      vo.set("avatarUrl", user.getAvatarUrl());
+      vo.set("id", user.getId());
+      followUsers.add(vo);
+    }
+    model.addAttribute("followUsers", followUsers);
+    if (hostHolder.getUser() != null) {
+      model.addAttribute(
+          "followed",
+          followService.isFollower(hostHolder.getUser().getId(), EntityType.QUESTION, qid));
+    } else {
+      model.addAttribute("followed", false);
+    }
 
     return "detail";
   }
