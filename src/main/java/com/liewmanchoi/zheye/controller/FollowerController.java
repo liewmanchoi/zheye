@@ -164,6 +164,7 @@ public class FollowerController {
   }
 
   private List<ViewObject> getUsersInfo(int localUserId, List<Integer> userIds) {
+    log.info("getUsersInfo输入参数：localUserId[{}], userIds[{}]",localUserId,userIds);
     List<ViewObject> userInfos = new ArrayList<>();
     for (Integer uid : userIds) {
       User user = userService.getUser(uid);
@@ -189,6 +190,8 @@ public class FollowerController {
       }
       userInfos.add(viewObject);
     }
+
+    log.info("调用getUsersInfo，结果为[{}]", userInfos);
     return userInfos;
   }
 }
