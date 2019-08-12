@@ -84,6 +84,7 @@ public class RedisDAO {
 
   /** 关注某个实体 */
   public boolean follow(int userId, int entityType, int entityId) {
+    log.info("用户[{}]关注类型为[{}]的实体[{}]", userId, entityType, entityId);
     String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
     String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
 
@@ -114,6 +115,7 @@ public class RedisDAO {
 
   /** 取消关注某个实体 */
   public boolean unfollow(int userId, int entityType, int entityId) {
+    log.info("用户[{}]取消关注类型为[{}]的实体[{}]", userId, entityType, entityId);
     String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
     String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
 
@@ -140,6 +142,7 @@ public class RedisDAO {
   }
 
   public List<Integer> getFollowers(int entityType, int entityId, int offset, int count) {
+    log.info("获取类型为[{}]的实体[{}]的粉丝", entityType, entityId);
     String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
     Set<Integer> result =
         followerServiceOperations.rangeByScore(followerKey, offset, offset + count);
@@ -148,11 +151,13 @@ public class RedisDAO {
 
   /** 获取实体的follower数量 */
   public long getFollowerCount(int entityType, int entityId) {
+    log.info("获取类型为[{}]的实体[{}]的粉丝数量", entityType, entityId);
     String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
     return Optional.ofNullable(followerServiceOperations.zCard(followerKey)).orElse(0L);
   }
 
   public List<Integer> getFollowees(int userId, int entityType, int offset, int count) {
+    log.info("获取用户[{}]关注的类型为[{}]的实体", userId, entityType);
     String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
     Set<Integer> result =
         followerServiceOperations.rangeByScore(followeeKey, offset, offset + count);
@@ -161,6 +166,7 @@ public class RedisDAO {
 
   /** 获取当前用户userId关注的实体的数量 */
   public long getFolloweeCount(int userId, int entityType) {
+    log.info("获取用户[{}]关注的类型为[{}]的实体数量", userId, entityType);
     String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
     return Optional.ofNullable(followerServiceOperations.zCard(followeeKey)).orElse(0L);
   }
@@ -168,6 +174,8 @@ public class RedisDAO {
   /** 判断当前用户是否是某个实体的粉丝 */
   public boolean isFollower(int userId, int entityType, int entityId) {
     String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
-    return followerServiceOperations.score(followerKey, userId) != null;
+    boolean result = followerServiceOperations.score(followerKey, userId) != null;
+    log.info("用户[{}]是类型为[{}]的实体[{}]的粉丝：[{}]", userId, entityType, entityId, result);
+    return result;
   }
 }
