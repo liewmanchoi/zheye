@@ -31,6 +31,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 @Configuration
 public class KafkaConfig {
   public static final String TOPIC = "zheye";
+  public static final String GROUP_ID = "event_consumer";
 
   @Value("${spring.kafka.producer.bootstrap-servers}")
   private String serverAddresses;
@@ -71,8 +72,8 @@ public class KafkaConfig {
     config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAddresses);
     config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-    config.put(ConsumerConfig.GROUP_ID_CONFIG, "PigeonConsumer");
-    config.put(JsonDeserializer.TRUSTED_PACKAGES, "com.liewmanchoi.domain.message");
+    config.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
+    config.put(JsonDeserializer.TRUSTED_PACKAGES, "com.liewmanchoi.zheye.event.Event");
 
     return config;
   }
