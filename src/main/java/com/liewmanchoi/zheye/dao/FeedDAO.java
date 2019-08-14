@@ -35,4 +35,6 @@ public interface FeedDAO {
       @Param("maxId") int maxId,
       @Param("actorIds") List<Integer> actorIds,
       @Param("count") int count);
+
+  List<Feed> getFeedsById(@Param("ids") List<Integer> ids);
 }

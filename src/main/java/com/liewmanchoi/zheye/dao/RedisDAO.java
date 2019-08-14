@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
@@ -35,6 +36,10 @@ public class RedisDAO {
   @Autowired
   @Qualifier(value = "followerServiceOperations")
   private ZSetOperations<String, Integer> followerServiceOperations;
+
+  @Autowired
+  @Qualifier(value = "feedServiceOperations")
+  private ListOperations<String, Integer> feedServiceOperations;
 
   /** 获取赞的数量 */
   public long getLikeCount(int entityType, int entityId) {
@@ -172,5 +177,59 @@ public class RedisDAO {
     boolean result = followerServiceOperations.score(followerKey, userId) != null;
     log.info("用户[{}]是类型为[{}]的实体[{}]的粉丝：[{}]", userId, entityType, entityId, result);
     return result;
+  }
+
+  /** 向用户的feed收件箱inbox添加条目 */
+  public long addFeedInbox(int userId, int feedId) {
+    log.info("将[{}]添加至[{}]的收件箱", feedId, userId);
+    String inboxKey = RedisKeyUtil.getFeedInboxKey(userId);
+    Long result = feedServiceOperations.leftPush(inboxKey, feedId);
+    return Optional.ofNullable(result).orElse(0L);
+  }
+
+  /** 向用户的feed收件箱inbox删除条目 */
+  public long removeFeedInbox(int userId, int feedId) {
+    log.info("将[{}]从[{}]的收件箱中删除", feedId, userId);
+    String inboxKey = RedisKeyUtil.getFeedInboxKey(userId);
+    Long result = feedServiceOperations.remove(inboxKey, 0, feedId);
+    return Optional.ofNullable(result).orElse(0L);
+  }
+
+  /** 获取用户的feed收件箱inbox */
+  public List<Integer> getFeedInbox(int id, long start, long end) {
+    log.info("获取用户[{}]的收件箱", id);
+    String inboxKey = RedisKeyUtil.getFeedInboxKey(id);
+    return feedServiceOperations.range(inboxKey, start, end);
+  }
+
+  public List<Integer> getFeedInbox(int id) {
+    return getFeedInbox(id, 0, -1);
+  }
+
+  /** 向用户的feed发件箱outbox添加条目 */
+  public long addFeedOutbox(int userId, int feedId) {
+    log.info("将[{}]添加至[{}]的发件箱", feedId, userId);
+    String outboxKey = RedisKeyUtil.getFeedOutboxKey(userId);
+    Long result = feedServiceOperations.leftPush(outboxKey, feedId);
+    return Optional.ofNullable(result).orElse(0L);
+  }
+
+  /** 向用户的feed发件箱outbox删除条目 */
+  public long removeFeedOutbox(int userId, int feedId) {
+    log.info("将[{}]从[{}]的发件箱中删除", feedId, userId);
+    String outboxKey = RedisKeyUtil.getFeedOutboxKey(userId);
+    Long result = feedServiceOperations.remove(outboxKey, 0, feedId);
+    return Optional.ofNullable(result).orElse(0L);
+  }
+
+  /** 获取用户的feed发件箱outbox */
+  public List<Integer> getFeedOutbox(int id, long start, long end) {
+    log.info("获取用户[{}]的发件箱", id);
+    String outboxKey = RedisKeyUtil.getFeedOutboxKey(id);
+    return feedServiceOperations.range(outboxKey, start, end);
+  }
+
+  public List<Integer> getFeedOutbox(int id) {
+    return getFeedOutbox(id, 0, -1);
   }
 }

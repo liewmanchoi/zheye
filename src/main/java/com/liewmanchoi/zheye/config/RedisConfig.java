@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -55,5 +56,11 @@ public class RedisConfig {
   public ZSetOperations<String, Integer> followerServiceOperations() {
     RedisTemplate<String, Integer> redisTemplate = likeServiceTemplate();
     return redisTemplate.opsForZSet();
+  }
+
+  @Bean(name = "feedServiceOperations")
+  public ListOperations<String, Integer> feedServiceOperations() {
+    RedisTemplate<String, Integer> redisTemplate = likeServiceTemplate();
+    return redisTemplate.opsForList();
   }
 }
