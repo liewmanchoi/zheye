@@ -53,9 +53,19 @@ public class FeedService {
     return feedDAO.getFeedsById(feedIds.stream().limit(count).collect(Collectors.toList()));
   }
 
-  public boolean addFeed(Feed feed) {
-    feedDAO.addFeed(feed);
-    return feed.getId() > 0;
+  public void refreshBox(int userId, int feedId) {
+    // 1. 更新userId的发件箱
+    redisDAO.addFeedOutbox(userId, feedId);
+    // 2. 更新userId对应的followers的收件箱
+    List<Integer> followers =
+        followService.getFollowers(EntityType.USER, userId, Integer.MAX_VALUE);
+    for (int follower : followers) {
+      redisDAO.addFeedInbox(follower, feedId);
+    }
+  }
+
+  public int addFeed(Feed feed) {
+    return feedDAO.addFeed(feed);
   }
 
   public Feed getFeedById(int id) {

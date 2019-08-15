@@ -7,7 +7,7 @@
     <include refid="selectedFields"/>
     FROM
     <include refid="table"/>
-    WHERE id < #{maxId}
+    WHERE id &lt; #{maxId}
 
     <if test="!actorIds.isEmpty()">
       AND actor_id IN
