@@ -1,6 +1,7 @@
 package com.liewmanchoi.zheye.event;
 
 import com.liewmanchoi.zheye.config.KafkaConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
  * @author wangsheng
  * @date 2019/8/11
  */
+@Slf4j
 @Service
 public class EventProducer {
   @Autowired private KafkaTemplate<String, Event> kafkaTemplate;
@@ -20,6 +22,7 @@ public class EventProducer {
     }
 
     kafkaTemplate.send(KafkaConfig.TOPIC, event);
+    log.info("生成事件[{}]", event);
     return true;
   }
 }

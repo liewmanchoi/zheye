@@ -11,7 +11,11 @@ public enum EventType {
   /** 评论 */
   COMMENT(1),
   /** 登陆 */
-  LOGIN(2);
+  LOGIN(2),
+  MAIL(3),
+  FOLLOW(4),
+  UNFOLLOW(5),
+  DISLIKE(6);
 
   @Getter private int value;
 }

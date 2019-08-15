@@ -38,7 +38,7 @@ public class EventConsumer implements ApplicationContextAware, InitializingBean 
     if (eventList == null || eventList.isEmpty()) {
       return;
     }
-
+    log.info("需要消费的事件数量为[{}]", eventList.size());
     for (Event event : eventList) {
       EventType eventType = event.getOperation();
 
@@ -61,11 +61,12 @@ public class EventConsumer implements ApplicationContextAware, InitializingBean 
       for (EventType eventType : eventTypes) {
         if (!handlerMap.containsKey(eventType)) {
           handlerMap.put(eventType, new ArrayList<>());
-        } else {
-          handlerMap.get(eventType).add(eventHandler);
         }
+        handlerMap.get(eventType).add(eventHandler);
       }
     }
+
+    log.info("handlerMap中的元素个数为[{}]", handlerMap.size());
   }
 
   @Override
