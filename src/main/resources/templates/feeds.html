@@ -89,11 +89,11 @@
              data-init="{&quot;params&quot;: {}, &quot;nodename&quot;: &quot;TopStory2FeedList&quot;}"
              data-delayed="true" data-za-module="TopStoryFeedList">
 
-            <#list feeds as vo>
-                <#if vo.type == 1>
-                    <@comment_question vo=vo />
-                <#elseif vo.type == 4>
-                    <@follow_question vo=vo />
+            <#list feeds as vos>
+                <#if vos.type == 1>
+                    <@comment_question vo=vos />
+                <#elseif vos.type == 4>
+                    <@follow_question vo=vos />
                 </#if>
             </#list>
         </div>
