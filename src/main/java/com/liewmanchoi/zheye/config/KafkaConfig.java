@@ -53,7 +53,6 @@ public class KafkaConfig {
     config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, serverAddresses);
     config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-
     return config;
   }
 
@@ -73,7 +72,7 @@ public class KafkaConfig {
     config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     config.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
-    config.put(JsonDeserializer.TRUSTED_PACKAGES, "com.liewmanchoi.zheye.event.Event");
+    config.put(JsonDeserializer.TRUSTED_PACKAGES, "com.liewmanchoi.zheye.event");
 
     return config;
   }
@@ -85,7 +84,7 @@ public class KafkaConfig {
 
   @Bean
   public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Event>>
-  kafkaListenerContainerFactory() {
+      kafkaListenerContainerFactory() {
     ConcurrentKafkaListenerContainerFactory<String, Event> factory =
         new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory());
