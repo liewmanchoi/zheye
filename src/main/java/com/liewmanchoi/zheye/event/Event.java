@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author wangsheng
  * @date 2019/8/11
  */
 @Getter
+@ToString
 public class Event {
   /** 事件（操作）类型 */
   private EventType operation;

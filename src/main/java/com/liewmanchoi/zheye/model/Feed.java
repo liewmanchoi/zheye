@@ -1,6 +1,8 @@
 package com.liewmanchoi.zheye.model;
 
+import com.alibaba.fastjson.JSONObject;
 import java.util.Date;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,4 +30,12 @@ public class Feed {
   private int status;
   /** 存储摘要信息，格式为json字符串 */
   private String summaryData;
+
+  public void setSummaryData(Map<String, Object> map) {
+    this.summaryData = JSONObject.toJSONString(map);
+  }
+
+  public Object get(String key) {
+    return summaryData == null ? null : JSONObject.parseObject(summaryData, Map.class).get(key);
+  }
 }
