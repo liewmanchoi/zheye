@@ -24,7 +24,7 @@ public class FeedController {
   @RequestMapping(
       path = {"/pushfeeds"},
       method = {RequestMethod.GET, RequestMethod.POST})
-  private String getPushFeeds(Model model) {
+  public String getPushFeeds(Model model) {
     int localUserId = hostHolder.getUser().getId();
     List<Feed> feeds = feedService.getInboxFeeds(localUserId, 10);
     model.addAttribute("feeds", feeds);
@@ -34,7 +34,7 @@ public class FeedController {
   @RequestMapping(
       path = {"/pullfeeds"},
       method = {RequestMethod.GET, RequestMethod.POST})
-  private String getPullFeeds(Model model) {
+  public String getPullFeeds(Model model) {
     int localUserId = hostHolder.getUser().getId();
 
     List<Feed> feeds = feedService.pullFeeds(localUserId, 10);
