@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liewmanchoi.zheye.dao.FeedDAO">
+  <select id="pullFeedsByActorId" resultType="com.liewmanchoi.zheye.model.Feed">
+    SELECT
+    <include refid="selectedFields"/>
+    FROM
+    <include refid="table"/>
+    WHERE id &lt; #{maxId}
+
+    <if test="!actorIds.isEmpty()">
+      AND actor_id IN
+      <foreach collection="actorIds" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    ORDER BY id DESC
+    LIMIT #{count}
+  </select>
+
+  <select id="getFeedsById" resultType="com.liewmanchoi.zheye.model.Feed">
+    SELECT
+    <include refid="selectedFields"/>
+    FROM
+    <include refid="table"/>
+
+    <if test="!ids.isEmpty()">
+      WHERE id IN
+      <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    ORDER BY id DESC
+  </select>
+
+  <sql id="table">feed</sql>
+  <sql id="selectedFields">id, actor_id, type, entity_type, entity_id, created_date, summary_data, status</sql>
+</mapper>

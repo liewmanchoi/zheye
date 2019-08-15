@@ -64,7 +64,7 @@ public class UserService {
     user = new User();
     user.setName(username);
     user.setSalt(UUID.randomUUID().toString().substring(0, 6));
-    String avatarUrl = String.format("../images/avatars/%d.jpg", new Random().nextInt(11));
+    String avatarUrl = String.format("/images/avatars/%d.jpg", new Random().nextInt(11));
     user.setAvatarUrl(avatarUrl);
     String saltedPassword = password + user.getSalt();
     user.setPassword(DigestUtils.md5DigestAsHex(saltedPassword.getBytes()));

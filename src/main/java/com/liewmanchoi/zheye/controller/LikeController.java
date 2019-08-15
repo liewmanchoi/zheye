@@ -1,5 +1,8 @@
 package com.liewmanchoi.zheye.controller;
 
+import com.liewmanchoi.zheye.event.Event;
+import com.liewmanchoi.zheye.event.EventProducer;
+import com.liewmanchoi.zheye.event.EventType;
 import com.liewmanchoi.zheye.model.EntityType;
 import com.liewmanchoi.zheye.model.HostHolder;
 import com.liewmanchoi.zheye.model.Reply;
@@ -22,14 +25,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 @Controller
 public class LikeController {
-  @Autowired
-  private LikeService likeService;
-  @Autowired
-  private HostHolder hostHolder;
-  @Autowired
-  private ReplyService replyService;
+  @Autowired private LikeService likeService;
+  @Autowired private HostHolder hostHolder;
+  @Autowired private ReplyService replyService;
+  @Autowired private EventProducer eventProducer;
 
-  @RequestMapping(path = {"/like"}, method = {RequestMethod.POST})
+  @RequestMapping(
+      path = {"/like"},
+      method = {RequestMethod.POST})
   @ResponseBody
   public String like(@RequestParam("commentId") int commentId) {
     if (hostHolder.getUser() == null) {
@@ -39,17 +42,28 @@ public class LikeController {
 
     Reply reply = replyService.getReplyById(commentId);
     long likeCount = likeService.like(hostHolder.getUser().getId(), EntityType.COMMENT, commentId);
+
+    // 触发事件
+    eventProducer.fireEvent(
+        new Event()
+            .setActorId(hostHolder.getUser().getId())
+            .setOperation(EventType.LIKE)
+            .setEntityType(EntityType.COMMENT)
+            .setEntityId(reply.getId()));
     return JsonUtil.getJSONString(STATUS.SUCCESS, String.valueOf(likeCount));
   }
 
-  @RequestMapping(path = {"/dislike"}, method = {RequestMethod.POST})
+  @RequestMapping(
+      path = {"/dislike"},
+      method = {RequestMethod.POST})
   @ResponseBody
   public String dislike(@RequestParam("commentId") int commentId) {
     if (hostHolder.getUser() == null) {
       // TODO: 必须修正这个诡异的数字
       return JsonUtil.getJSONString(999);
     }
-    long likeCount = likeService.dislike(hostHolder.getUser().getId(), EntityType.COMMENT, commentId);
+    long likeCount =
+        likeService.dislike(hostHolder.getUser().getId(), EntityType.COMMENT, commentId);
     return JsonUtil.getJSONString(STATUS.SUCCESS, String.valueOf(likeCount));
   }
 }

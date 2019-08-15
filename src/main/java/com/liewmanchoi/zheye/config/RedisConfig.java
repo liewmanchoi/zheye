@@ -4,10 +4,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -15,6 +18,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * @date 2019/8/10
  */
 @Configuration
+@EnableTransactionManagement
 public class RedisConfig {
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {
@@ -32,7 +36,7 @@ public class RedisConfig {
     return connectionFactory;
   }
 
-  @Bean(name = "likeServiceTemplate")
+  @Bean(name = "stringIntegerTemplate")
   public RedisTemplate<String, Integer> likeServiceTemplate() {
     RedisConnectionFactory factory = redisConnectionFactory();
     RedisTemplate<String, Integer> redisTemplate = new RedisTemplate<>();
@@ -46,5 +50,17 @@ public class RedisConfig {
   public SetOperations<String, Integer> likeServiceOperations() {
     RedisTemplate<String, Integer> redisTemplate = likeServiceTemplate();
     return redisTemplate.opsForSet();
+  }
+
+  @Bean(name = "followerServiceOperations")
+  public ZSetOperations<String, Integer> followerServiceOperations() {
+    RedisTemplate<String, Integer> redisTemplate = likeServiceTemplate();
+    return redisTemplate.opsForZSet();
+  }
+
+  @Bean(name = "feedServiceOperations")
+  public ListOperations<String, Integer> feedServiceOperations() {
+    RedisTemplate<String, Integer> redisTemplate = likeServiceTemplate();
+    return redisTemplate.opsForList();
   }
 }

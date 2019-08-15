@@ -20,10 +20,6 @@
       <artifactId>spring-boot-starter-data-redis</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <artifactId>spring-boot-starter-data-solr</artifactId>-->
-    <!--      <groupId>org.springframework.boot</groupId>-->
-    <!--    </dependency>-->
     <dependency>
       <artifactId>spring-boot-starter-freemarker</artifactId>
       <groupId>org.springframework.boot</groupId>
@@ -64,6 +60,10 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
     <dependency>

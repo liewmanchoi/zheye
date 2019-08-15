@@ -1,5 +1,8 @@
 package com.liewmanchoi.zheye.controller;
 
+import com.liewmanchoi.zheye.event.Event;
+import com.liewmanchoi.zheye.event.EventProducer;
+import com.liewmanchoi.zheye.event.EventType;
 import com.liewmanchoi.zheye.model.EntityType;
 import com.liewmanchoi.zheye.model.HostHolder;
 import com.liewmanchoi.zheye.model.Reply;
@@ -28,6 +31,7 @@ public class CommentController {
   @Autowired ReplyService replyService;
 
   @Autowired QuestionService questionService;
+  @Autowired private EventProducer eventProducer;
 
   @PostMapping(path = "/addComment")
   public String addComment(
@@ -43,10 +47,18 @@ public class CommentController {
       reply.setCreatedDate(new Date());
       reply.setStatus(0);
 
-      replyService.addReply(reply);
+      int replyId = replyService.addReply(reply);
 
       int count = replyService.getRepliesCount(reply.getEntityId(), reply.getEntityType());
       questionService.updateCommentCount(reply.getEntityId(), count);
+
+      // 触发事件
+      eventProducer.fireEvent(
+          new Event()
+              .setOperation(EventType.COMMENT)
+              .setActorId(hostHolder.getUser().getId())
+              .setEntityId(questionId)
+              .setEntityType(EntityType.QUESTION));
     } catch (Exception exception) {
       log.error("增加评论失败" + exception.getMessage());
     }
